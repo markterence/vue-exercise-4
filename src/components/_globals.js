@@ -24,3 +24,6 @@ const registerVueComponents = requireComponent => {
 // https://github.com/webpack/webpack/issues/4772#issuecomment-358573955
 // `require.context`'s arguments must be static and not be variables.
 registerVueComponents(require.context(".", false, /_base-[\w-]+\.vue$/));
+registerVueComponents(
+  require.context("./Common", false, /[a-z0-9]+\.(jsx?|vue)$/i)
+);

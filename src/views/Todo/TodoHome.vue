@@ -18,6 +18,7 @@ export default {
       showCardDetail: false,
       selectedCard: {},
       checked: false,
+      // Load the list from the browser local storage
       list: listStorage.load(),
       storageUID: listStorage.load().cardList.length
     };
@@ -77,15 +78,16 @@ export default {
     },
 
     addCardToList(cardList) {
-      let values = {
+      let valuesToAdd = {
         cardTitle: this.cardTitle,
         id: this.storageUID++
       };
+      cardList.push(valuesToAdd);
 
       this.toggleCreateCard();
 
       this.logs.push(`Add`);
-      
+      this.logs.push(`--Value: ${JSON.stringify(valuesToAdd)}`);
     },
 
     updateCard(newVal) {
@@ -111,16 +113,24 @@ export default {
         o => o.id == cardToRemove.id
       );
 
+      const removedCard = this.list.cardList.splice(cardIndex, cardIndex - 1);
+
+      this.logs.push(`--Deleted: ${JSON.stringify(removedCard)}`);
       this.logs.push(`--cardIndex: ${cardIndex}`);
     },
 
     toggleCheck() {
       // `checked` boolean triggers the UI contextual state.
       this.checked = !this.checked;
+      this.list.cardList.forEach(e => {
+        this.$set(e, "isComplete", this.checked);
+      });
     },
 
     // TODO: use this function to clear the logs
-    clearLogs() {}
+    clearLogs() {
+      this.logs = [];
+    }
   }
 };
 </script>
@@ -181,7 +191,7 @@ export default {
           <!-- Card Footer -->
           <div class="pr-3 py-1 mt-2">
             <!-- Add Card -->
-            <div>
+            <div v-show="creatingCard == false">
               <b-form-input
                 v-model="cardTitle"
                 :autofocus="true"
@@ -198,7 +208,7 @@ export default {
             </div>
 
             <!-- + Add Another Card -->
-            <a type="button" class="text-dark" @click="toggleCreateCard">
+            <a v-show="creatingCard" type="button" class="text-dark" @click="toggleCreateCard">
               <div class="d-flex px-1">
                 <span class="mr-1">
                   <FontAwesomeIcon icon="plus" class="fa-sm" />
