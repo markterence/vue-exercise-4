@@ -113,7 +113,7 @@ export default {
         o => o.id == cardToRemove.id
       );
 
-      const removedCard = this.list.cardList.splice(cardIndex, cardIndex);
+      const removedCard = this.list.cardList.splice(cardIndex, 1);
 
       this.logs.push(`--Deleted: ${JSON.stringify(removedCard)}`);
       this.logs.push(`--cardIndex: ${cardIndex}`);

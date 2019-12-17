@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "lint:prettier": "prettier --write --loglevel warn",
     "lint:all:md": "yarn lint:prettier \"**/*.md\"",
-    "lint:all:prettier": "yarn lint:prettier \"**/*.{js,json,css,scss,vue,html,md}\""
+    "lint:all:prettier": "yarn lint:prettier \"**/*.{js,json,css,scss,vue,html,md}\"",
+    "live": "yarn build && cp ./CNAME ./dist/CNAME && surge ./dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.19",
